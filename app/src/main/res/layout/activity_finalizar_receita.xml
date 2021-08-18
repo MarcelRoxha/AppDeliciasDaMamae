@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.DeliciasDaMamae"
+    tools:context=".activity.FinalizarReceitaActivity">
+
+    <TextView
+        android:id="@+id/text_nome_receita_finalizada_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/bungee_shade"
+        android:text="@string/textView_nomeReceita"
+        android:textColor="@color/rosa"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/text_quanto_rende_receita"
+        android:textColor="@color/rosa"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/text_nome_receita_finalizada_id" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout8"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintStart_toStartOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_quant_porcoes_receita_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_porcoes_receita"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_porcentagem_acrescimo_receita"
+        android:textColor="@color/rosa"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintStart_toStartOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout8" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintStart_toStartOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/textView15">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_porcentagem_acrescentada_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edit_porcentagem"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout9"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView_Valores_Ingredientes_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_lista_ingredientes_adicionados_receita_id" />
+
+    <TextView
+        android:id="@+id/textView_valor_total_receita_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/textView_Valores_Ingredientes_id"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Valores_Ingredientes_id" />
+
+    <Button
+        android:id="@+id/bt_calcular_receita_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn"
+        android:text="@string/text_botao_calcular_receita"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView_valor_total_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/bt_finalizar_receita_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn"
+        android:text="@string/text_botao_finalizar_receita"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_lista_ingredientes_adicionados_receita_id"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>

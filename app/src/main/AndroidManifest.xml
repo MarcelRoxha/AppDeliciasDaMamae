@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.marcel.a.n.roxha.deliciasdamamae">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.Camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo_tela_cel"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_logo_tela_cel_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Splash">
+        <activity android:name=".activity.DeletarBoloVendidoBancoActivity"></activity>
+        <activity android:name=".activity.EditarBoloVendidoBancoActivity" />
+        <activity android:name=".activity.BolosVendidosActivity2" />
+        <activity
+            android:name=".activity.FinalizarVendaBoloExpostoVitrineActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditarBoloCadastradoVendaActivity"
+            android:parentActivityName=".activity.BolosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AdicionarBoloVitrineActivity2"
+            android:parentActivityName=".activity.LojaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.FornoActivity"
+            android:parentActivityName=".activity.LojaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LojaActivity"
+            android:parentActivityName=".activity.PrincipalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BolosActivity"
+            android:parentActivityName=".activity.PrincipalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReceitasProntasActivity"
+
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.FinalizarReceitaActivity" />
+        <activity
+            android:name=".activity.NovaReceitaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ReceitasActivity"
+            android:parentActivityName=".activity.ProducaoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProducaoActivity"
+            android:parentActivityName=".activity.PrincipalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddItemEstoqueActivity"
+            android:parentActivityName=".activity.EstoqueActivity" />
+        <activity
+            android:name=".activity.EstoqueActivity"
+            android:parentActivityName=".activity.PrincipalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PrincipalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.marcel.a.n.roxha.deliciasdamamae.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+    </application>
+
+</manifest>

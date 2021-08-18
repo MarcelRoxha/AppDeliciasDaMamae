@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "362246004362",
+    "project_id": "delicias-da-mamae-19372",
+    "storage_bucket": "delicias-da-mamae-19372.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362246004362:android:8e4914c21dadb9371a5773",
+        "android_client_info": {
+          "package_name": "com.marcel.a.n.roxha.deliciasdamamae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362246004362-0f126bgva1njtm9qm2nt71hb4od562bc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbCHO-nsKMkROhS51BQoML_hw_2NHTPGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362246004362-0f126bgva1njtm9qm2nt71hb4od562bc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
