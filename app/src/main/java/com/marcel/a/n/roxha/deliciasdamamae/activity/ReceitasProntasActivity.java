@@ -1,13 +1,17 @@
 package com.marcel.a.n.roxha.deliciasdamamae.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,24 +30,30 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.marcel.a.n.roxha.deliciasdamamae.R;
+import com.marcel.a.n.roxha.deliciasdamamae.adapter.IngredienteAdapter;
 import com.marcel.a.n.roxha.deliciasdamamae.adapter.IngredienteAdicionadoAdapter;
 import com.marcel.a.n.roxha.deliciasdamamae.adapter.IngredientesReceitaProntaAdapter;
 import com.marcel.a.n.roxha.deliciasdamamae.adapter.ReceitasProntasAdapter;
 import com.marcel.a.n.roxha.deliciasdamamae.config.ConfiguracaoFirebase;
+import com.marcel.a.n.roxha.deliciasdamamae.helper.IngredienteReceitaDAO;
+import com.marcel.a.n.roxha.deliciasdamamae.helper.ReceitaCompletaDAO;
 import com.marcel.a.n.roxha.deliciasdamamae.model.ItemEstoqueModel;
 import com.marcel.a.n.roxha.deliciasdamamae.model.ReceitaModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReceitasProntasActivity extends AppCompatActivity {
 
     /*Componentes de tela*/
     private RecyclerView recyclerView_lista_ingredientes_receita;
+    private RecyclerView recyclerView_lista_ingredientes_estoque;
+
     private TextInputEditText nome_edit_receita;
     private TextInputEditText porcent_servico_edit_receita;
     private TextInputEditText quant_rendi_edit_receita;
-
     private TextView valor_ingredientes_edit_receita;
     private TextView valor_total_receita_edit_receita;
 
@@ -55,9 +65,11 @@ public class ReceitasProntasActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore = ConfiguracaoFirebase.getFirestor();
     CollectionReference referenceReceita = firebaseFirestore.collection("Receitas_completas");
     CollectionReference referenceReceitaIngredientes = firebaseFirestore.collection("Receitas_completas");
+    CollectionReference referenceIngredientesReceita = firebaseFirestore.collection("Item_Estoque");
 
     /*Classes*/
     private IngredienteAdicionadoAdapter adapterIngrediente;
+    private IngredienteAdapter adapterItem;
 
 
     /*Variaveis para receber o valor salvo no banco*/
@@ -72,7 +84,7 @@ public class ReceitasProntasActivity extends AppCompatActivity {
     String idIngrediente;
     String valorIngreienteBanco;
     double valorIngredienteBancoConverdo;
-    List<Double> listaValoresIngredientes = new ArrayList<>();
+    private List<Double> listValoresItensAdd = new ArrayList<>();
     double resultado;
     double valor;
     String valorIngredientesExibi;
@@ -84,6 +96,10 @@ public class ReceitasProntasActivity extends AppCompatActivity {
     String quantRendimentoReceitaAtualiza;
     String valorTotalIngredientesAtualiza;
     String valorTotalReceitaAtualiza;
+    String textoIngredientes;
+    String textoValorReceita;
+    double addIngredienteReceita;
+    double deleteIngredienteReceita;
 
 
     @Override
@@ -99,6 +115,8 @@ public class ReceitasProntasActivity extends AppCompatActivity {
 
         //Indentificando os componentes da tela
         recyclerView_lista_ingredientes_receita = findViewById(R.id.recyclerView_lista_ingredientes_receita_edit_id);
+        recyclerView_lista_ingredientes_estoque = findViewById(R.id.recyclerView_Lista_ingredientes_estoque_id);
+
         nome_edit_receita = findViewById(R.id.nome_receita_edit_id);
         porcent_servico_edit_receita = findViewById(R.id.porcent_receita_edit_id);
         quant_rendi_edit_receita = findViewById(R.id.rendimento_fornada_receita_edit_id);
@@ -118,9 +136,84 @@ public class ReceitasProntasActivity extends AppCompatActivity {
         if(idRecuperadoReceitaEdit != null){
             carregarInformacoesReceitaPronta(idRecuperadoReceitaEdit);
             carregarListaIngredientesReceita();
-            adapterIngrediente.startListening();
+            carregarListaIngredientesEstoque();
+           adapterIngrediente.startListening();
+           adapterItem.startListening();
 
         }
+
+        botao_cancelar_voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ReceitasProntasActivity.this, ProducaoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        botao_salvar_alteracoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                nomeReceitaAtualiza = nome_edit_receita.getText().toString();
+                porcentServicoReceitaAtualiza = porcent_servico_edit_receita.getText().toString();
+                quantRendimentoReceitaAtualiza = quant_rendi_edit_receita.getText().toString();
+                valorTotalIngredientesAtualiza = valor_ingredientes_edit_receita.getText().toString();
+                valorTotalReceitaAtualiza = valor_total_receita_edit_receita.getText().toString();
+
+                if(        !nomeReceitaAtualiza.isEmpty()
+                        && !porcentServicoReceitaAtualiza.isEmpty()
+                        && !quantRendimentoReceitaAtualiza.isEmpty()
+                        && !valorTotalIngredientesAtualiza.isEmpty()
+                        && !valorTotalReceitaAtualiza.isEmpty()){
+
+
+
+                    String valorTotalIngredientesPrepare = valorTotalIngredientesAtualiza.replace(",", ".");
+                    String valorTotalReceitaPrepare = valorTotalReceitaAtualiza.replace(",", ".");
+
+                    double valorTotalIngredientesConvertido = Double.parseDouble(valorTotalIngredientesPrepare);
+
+                    int porcentConvert = Integer.parseInt(porcentServicoReceitaAtualiza);
+
+
+                    double resultadoPorcentagem = (valorTotalIngredientesConvertido * porcentConvert) / 100;
+                    double resultadoTotalReceita = resultadoPorcentagem + valorTotalIngredientesConvertido ;
+
+
+                    convertStringValoresIngredientes(valorTotalIngredientesConvertido);
+                    convertStringValorTotalReceita(resultadoTotalReceita);
+
+
+                    ReceitaModel receitaAtualiza = new ReceitaModel();
+                    receitaAtualiza.setIdReceita(idRecuperadoReceitaEdit);
+                    receitaAtualiza.setNomeReceita(nomeReceitaAtualiza);
+                    receitaAtualiza.setQuantRendimentoReceita(quantRendimentoReceitaAtualiza);
+                    receitaAtualiza.setPorcentagemServico(porcentServicoReceitaAtualiza);
+                    receitaAtualiza.setValorTotalReceita(getValorTotaReceita());
+                    receitaAtualiza.setValoresIngredientes(getValorTotalIngredientes());
+
+                    ReceitaCompletaDAO receitaCompletaDAO = new ReceitaCompletaDAO(ReceitasProntasActivity.this);
+                    receitaCompletaDAO.atualizarReceita(idRecuperadoReceitaEdit, receitaAtualiza);
+
+
+                    Intent intent = new Intent(ReceitasProntasActivity.this, ProducaoActivity.class);
+                    startActivity(intent);
+                    finish();
+
+
+                }else {
+                    Toast.makeText(ReceitasProntasActivity.this, "Favor verifique as informações inseridas", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+
+
+
+            }
+        });
 
 
 
@@ -130,6 +223,7 @@ public class ReceitasProntasActivity extends AppCompatActivity {
     }
 
     private void carregarInformacoesReceitaPronta(String idRecuperadoReceitaEdit) {
+
             String verificaId = idRecuperadoReceitaEdit;
 
             if (verificaId != null){
@@ -143,10 +237,13 @@ public class ReceitasProntasActivity extends AppCompatActivity {
                         porcentServicoReceita = receitaModel.getPorcentagemServico();
                         quanRendimentoReceita = receitaModel.getQuantRendimentoReceita();
                         valorTotalRecita = receitaModel.getValorTotalReceita();
+                        valorTotalIngredientes = receitaModel.getValoresIngredientes();
 
-
-                        recuperaIngredientes(nomeReceita, porcentServicoReceita, quanRendimentoReceita, valorTotalRecita);
-                       // carregarListaIngredientesReceita();
+                        nome_edit_receita.setText(nomeReceita);
+                        porcent_servico_edit_receita.setText(porcentServicoReceita);
+                        quant_rendi_edit_receita.setText(quanRendimentoReceita);
+                        valor_total_receita_edit_receita.setText(valorTotalRecita);
+                        valor_ingredientes_edit_receita.setText(valorTotalIngredientes);
 
 
                     }
@@ -163,98 +260,91 @@ public class ReceitasProntasActivity extends AppCompatActivity {
 
     }
 
-    private void recuperaIngredientes(String nomeReceita, String porcentServicoReceita, String quanRendimentoReceita, String valorTotalRecita) {
+    /*Ingredientes em estoque  ao clicar será adicionado esse valor a receita*/
+    private void carregarListaIngredientesEstoque() {
 
-        String nome = nomeReceita;
-        String porcent = porcentServicoReceita;
-        String quantRendi = quanRendimentoReceita;
-        String valorReceita = valorTotalRecita;
+        Query query = FirebaseFirestore.getInstance().collection("Item_Estoque").orderBy("nameItem", Query.Direction.ASCENDING);
 
-        referenceReceitaIngredientes = referenceReceita.document(idRecuperadoReceitaEdit).collection(nomeReceita);
-        referenceReceitaIngredientes.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+
+        FirestoreRecyclerOptions<ItemEstoqueModel> options = new FirestoreRecyclerOptions.Builder<ItemEstoqueModel>()
+                .setQuery(query, ItemEstoqueModel.class)
+                .build();
+
+        adapterItem = new IngredienteAdapter(options);
+
+        recyclerView_lista_ingredientes_estoque.setHasFixedSize(true);
+        recyclerView_lista_ingredientes_estoque.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView_lista_ingredientes_estoque.setAdapter(adapterItem);
+        recyclerView_lista_ingredientes_estoque.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayout.VERTICAL));
+
+        adapterItem.setOnItemClickListerner(new IngredienteAdapter.OnItemClickLisener() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
 
-                List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
-                for(DocumentSnapshot list : snapshotList){
-                    idIngrediente = list.getId();
-
-                    calcularValoresIngredientes(idIngrediente, nome, porcent, quantRendi, valorReceita);
-
-                }
-
-
-
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-            }
-        });
-
-
-
-        //exibeValoresUser();
-
-
-
-
-    }
-
-
-    private void calcularValoresIngredientes(String idIngrediente, String name, String porcentti, String quantRendiimento, String valorReceitaTotal ) {
-
-        String nomeExibi = name;
-        String porcentExibi = porcentti;
-        String quantRendiExibi = quantRendiimento;
-        String valorReceitaExibi = valorReceitaTotal;
-
-        referenceReceita.document(idRecuperadoReceitaEdit).collection(nomeReceita).document(idIngrediente).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                /*Caso tenha ação de clique será adicionado esse item que está em estoque a receita.*/
 
                 ItemEstoqueModel itemEstoqueModel = documentSnapshot.toObject(ItemEstoqueModel.class);
 
                 assert itemEstoqueModel != null;
-
-                valorIngreienteBanco = itemEstoqueModel.getValorItemPorReceita();
-                valorIngredienteBancoConverdo = Double.parseDouble(valorIngreienteBanco);
-                resultado += valorIngredienteBancoConverdo;
-                listaValoresIngredientes.add(valorIngredienteBancoConverdo);
-                //Toast.makeText(ReceitasProntasActivity.this, "Resultado dentro : " + resultado, Toast.LENGTH_SHORT).show();
-                recuperaTeste(resultado);
+                String id = documentSnapshot.getId();
+                String nomeItemAdd = itemEstoqueModel.getNameItem();
+                String valorItemAdd = itemEstoqueModel.getValorItemPorReceita();
+                String quantItemAdd = itemEstoqueModel.getQuantUsadaReceita();
 
 
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(ReceitasProntasActivity.this);
+
+                alert.setMessage("CONFIRME PARA ADICIONAR INGREDIENTE");
+                alert.setTitle("ADICIONAR INGREDIENTE");
+                alert.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        ReceitaCompletaDAO receitaCompletaDAO = new ReceitaCompletaDAO(ReceitasProntasActivity.this);
+
+                      receitaCompletaDAO.adicionarIngredienteEdit(idRecuperadoReceitaEdit, nomeReceita, nomeItemAdd, quantItemAdd, valorItemAdd);
+
+
+                            String valorIngredientePrepare = valorItemAdd.replace(",", ".");
+                            String valorTotalIngredientesPrepare = valorTotalIngredientes.replace(",", ".");
+                            String valorTotalReceitaPrepare = valorTotalRecita.replace(",", ".");
+
+
+                            double valorTotalReceitaConvertido = Double.parseDouble(valorTotalReceitaPrepare);
+                            double valorTotalIngredientesConvertido = Double.parseDouble(valorTotalIngredientesPrepare);
+                            double valorItemAdicionadoConvertido = Double.parseDouble(valorIngredientePrepare);
+                            int porcentConvert = Integer.parseInt(porcentServicoReceita);
+
+
+                            double resultadoTotalIngredientes = valorTotalIngredientesConvertido + valorItemAdicionadoConvertido;
+                            double resultadoPorcentagem = (resultadoTotalIngredientes * porcentConvert) / 100;
+                            double resultadoTotalReceita = resultadoPorcentagem + resultadoTotalIngredientes ;
+
+
+                            convertStringValoresIngredientes(resultadoTotalIngredientes);
+                            convertStringValorTotalReceita(resultadoTotalReceita);
+
+
+                            valor_total_receita_edit_receita.setText(getValorTotaReceita());
+                            valor_ingredientes_edit_receita.setText(getValorTotalIngredientes());
+
+                    }
+                }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                alert.create();
+                alert.show();
             }
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
         });
-
-
-
-    }
-
-    private void recuperaTeste(double resultado) {
-        nomeReceitaAtualiza = nomeReceita;
-        porcentServicoReceitaAtualiza = porcentServicoReceita;
-        quantRendimentoReceitaAtualiza = quanRendimentoReceita;
-        valorTotalIngredientesAtualiza = valorTotalIngredientes;
-        valorTotalReceitaAtualiza = valorTotalRecita;
-
-        String textoTotalIngredients = String.format("%.2f", resultado);
-        nome_edit_receita.setText(nomeReceitaAtualiza);
-        porcent_servico_edit_receita.setText(porcentServicoReceitaAtualiza);
-        quant_rendi_edit_receita.setText(quantRendimentoReceitaAtualiza);
-
-        valor_total_receita_edit_receita.setText(valorTotalReceitaAtualiza);
-        valor_ingredientes_edit_receita.setText(textoTotalIngredients);
-
 
 
 
@@ -279,20 +369,120 @@ public class ReceitasProntasActivity extends AppCompatActivity {
         adapterIngrediente.setOnItemClickListerner(new IngredienteAdicionadoAdapter.OnItemClickLisener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Toast.makeText(ReceitasProntasActivity.this, "Olha o clique", Toast.LENGTH_SHORT).show();
+                /*Caso tenha ação de clique será adicionado esse item que está em estoque a receita.*/
+
+                ItemEstoqueModel itemEstoqueModel = documentSnapshot.toObject(ItemEstoqueModel.class);
+
+                assert itemEstoqueModel != null;
+                String id = documentSnapshot.getId();
+                String nomeItemAdd = itemEstoqueModel.getNameItem();
+                String valorItemAdd = itemEstoqueModel.getValorItemPorReceita();
+                String quantItemAdd = itemEstoqueModel.getQuantUsadaReceita();
 
 
+
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(ReceitasProntasActivity.this);
+
+                alert.setMessage("CONFIRME PARA ADICIONAR INGREDIENTE");
+                alert.setTitle("REMOVER INGREDIENTE");
+                alert.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        ReceitaCompletaDAO receitaCompletaDAO = new ReceitaCompletaDAO(ReceitasProntasActivity.this);
+
+                        receitaCompletaDAO.removerIngredienteEdit(idRecuperadoReceitaEdit, id, nomeReceita, nomeItemAdd, quantItemAdd, valorItemAdd);
+
+
+                        String valorIngredientePrepare = valorItemAdd.replace(",", ".");
+                        String valorTotalIngredientesPrepare = valorTotalIngredientes.replace(",", ".");
+                        String valorTotalReceitaPrepare = valorTotalRecita.replace(",", ".");
+
+
+                        double valorTotalReceitaConvertido = Double.parseDouble(valorTotalReceitaPrepare);
+                        double valorTotalIngredientesConvertido = Double.parseDouble(valorTotalIngredientesPrepare);
+                        double valorItemAdicionadoConvertido = Double.parseDouble(valorIngredientePrepare);
+                        int porcentConvert = Integer.parseInt(porcentServicoReceita);
+
+
+                        double resultadoTotalIngredientes = valorTotalIngredientesConvertido - valorItemAdicionadoConvertido;
+                        double resultadoPorcentagem = (resultadoTotalIngredientes * porcentConvert) / 100;
+                        double resultadoTotalReceita = resultadoPorcentagem + resultadoTotalIngredientes ;
+
+
+                        convertStringValoresIngredientes(resultadoTotalIngredientes);
+                        convertStringValorTotalReceita(resultadoTotalReceita);
+
+
+                        valor_total_receita_edit_receita.setText(getValorTotaReceita());
+                        valor_ingredientes_edit_receita.setText(getValorTotalIngredientes());
+
+                    }
+                }).setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                alert.create();
+                alert.show();
             }
+
+
         });
 
 
+
+    }
+
+    private void convertStringValorTotalReceita(double resultadoTotalReceita) {
+
+        double totalReceita = resultadoTotalReceita;
+
+        String valorReceitaTotal = String.format("%.2f", totalReceita);
+
+        this.textoValorReceita = valorReceitaTotal;
+
+        valorTotalRecita = textoValorReceita;
+
+    }
+
+    private void convertStringValoresIngredientes(double resultadoTotalIngredientes) {
+
+
+        double TotalIngredientes = resultadoTotalIngredientes;
+
+        String totalIngredientes = String.format("%.2f", TotalIngredientes);
+
+
+        this.textoIngredientes = totalIngredientes;
+
+        valorTotalIngredientes = textoIngredientes;
+    }
+
+    private String getValorTotaReceita (){
+
+        return textoValorReceita;
+    }
+
+    private String getValorTotalIngredientes(){
+
+        return textoIngredientes;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-      /*  carregarListaIngredientesReceita();
-        adapterIngrediente.startListening();*/
+        if(idRecuperadoReceitaEdit != null){
+            carregarInformacoesReceitaPronta(idRecuperadoReceitaEdit);
+            carregarListaIngredientesReceita();
+            carregarListaIngredientesEstoque();
+            adapterItem.startListening();
+            adapterIngrediente.startListening();
+
+        }
     }
 
     @Override

@@ -179,7 +179,7 @@ public class ReceitaNovaFragment extends Fragment {
 
                     //Methodo que verifica a duplicidade
                         verificarDuplicidadeNomeReceita(nomeReceitaDigitado);
-                        texto_tipo_producao.setText("RECEITA COMPLETA");
+                        texto_tipo_producao.setText(nomeReceitaDigitado);
                         texto_tipo_producao.setVisibility(View.VISIBLE);
 
                         contReceitaCompleta = 1;
@@ -302,6 +302,7 @@ public class ReceitaNovaFragment extends Fragment {
 
                         valorConvert = Double.parseDouble(valorItemAdicionado);
                         listValoresItensAdd.add(valorConvert);
+
                         contItem++ ;
 
                         if (contItem == 1){

@@ -27,6 +27,7 @@ import com.marcel.a.n.roxha.deliciasdamamae.R;
 import com.marcel.a.n.roxha.deliciasdamamae.activity.ReceitasProntasActivity;
 import com.marcel.a.n.roxha.deliciasdamamae.adapter.ReceitasProntasAdapter;
 import com.marcel.a.n.roxha.deliciasdamamae.config.ConfiguracaoFirebase;
+import com.marcel.a.n.roxha.deliciasdamamae.helper.ReceitaCompletaDAO;
 import com.marcel.a.n.roxha.deliciasdamamae.model.ReceitaModel;
 
 /**
@@ -92,6 +93,8 @@ public class ReceitasProntasFragment extends Fragment {
 
     /*Classes*/
     private ReceitasProntasAdapter adapterReceitaCompleta;
+    public ReceitaModel receitaModel;
+    public ReceitaCompletaDAO receitaCompletaDAO;
 
 
     /*Variaveis temporárias*/
@@ -132,15 +135,29 @@ public class ReceitasProntasFragment extends Fragment {
 
                 String idRecuperado = documentSnapshot.getId();
 
+
+
                 if(idRecuperado != null){
-                    carregarAlertaEditarAndDelet(idRecuperado);
+
+                        carregarAlertaEditarAndDelet(idRecuperado);
+
+                    }
+
+
+
                 }
 
 
-
-            }
         });
 
+
+
+    }
+
+
+    private void recuperarInformacoes() {
+
+        Toast.makeText(getActivity(), "Recupera Informacoes", Toast.LENGTH_SHORT).show();
     }
 
     private void carregarAlertaEditarAndDelet(String idReceita) {
@@ -159,7 +176,7 @@ public class ReceitasProntasFragment extends Fragment {
 
 
             }
-        }).setNeutralButton("CONFIG.", new DialogInterface.OnClickListener() {
+        }).setNeutralButton("EDITAR/DELETAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

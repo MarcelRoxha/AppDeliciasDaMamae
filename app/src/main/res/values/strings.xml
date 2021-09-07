@@ -137,6 +137,7 @@
     <string name="texto_nome_ingrediente_receita_pronta">Nome Ingrediente:</string>
     <string name="texto_quant_usada_receita_pronta">quantidade usada receita</string>
     <string name="texto_valor_ingrediente_receita_pronta">Valor do ingrediente nessa receita</string>
+    <string name="texto_lista_ingredientes_edit_receita">Lista de ingredientes em estoque</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 
