@@ -433,6 +433,8 @@ public class ConfeccionarBoloFragment extends Fragment {
                     botaoSalvarBoloVendas.setVisibility(View.VISIBLE);
 
 
+
+
                 } else {
 
                     Toast.makeText(getActivity(), "É necessário informar a % de lucro", Toast.LENGTH_SHORT).show();
@@ -457,19 +459,15 @@ public class ConfeccionarBoloFragment extends Fragment {
         String custoFormatado = custo.replace(",", ".");
         String porncetFormatado = porcDi.replace(",", ".");
 
-
         custoConvert = Double.parseDouble(custoFormatado);
         porcentConvert = Double.parseDouble(porncetFormatado);
 
-        resultado = (custoConvert * porcentConvert) / 100 + custoConvert;
+        double valorPorcent =((custoConvert * porcentConvert) / 100) ;
+        this.resultado = valorPorcent + custoConvert;
 
-        String totalVend = String.valueOf(resultado);
-/*
-        textoNomeBolo.setText(receitaRecuperada.getNomeReceita());
-        textoCustoTotalBolo.setText("Custo total do bolo foi: "+receitaRecuperada.getValorTotalReceita());
-        textoQuantRendeFornada.setText("Essa receita rende: "+ receitaRecuperada.getQuantRendimentoReceita() + " Bolos");*/
+        String totalVend = String.format("%.2f", this.resultado);
 
-        valorSugerido = String.format("%.2f", resultado);
+        this.valorSugerido = totalVend;
 
 
     }
