@@ -134,11 +134,7 @@ public class BolosParaVendaFragment extends Fragment {
 
                             Intent intent = new Intent(getActivity(), EditarBoloCadastradoVendaActivity.class);
                             intent.putExtra("boloKey", id);
-                           /* intent.putExtra("nomeboloKey", nomeBoloClicado);
-                            intent.putExtra("preoboloKey", precoBoloClicado);
-                            intent.putExtra("custoboloKey", custoBoloClicado);
-                            intent.putExtra("custoboloKey", custoBoloClicado);
-                            intent.putExtra("fotoboloKey", enderecoFotoBoloClicado);*/
+
                             startActivity(intent);
 
 
