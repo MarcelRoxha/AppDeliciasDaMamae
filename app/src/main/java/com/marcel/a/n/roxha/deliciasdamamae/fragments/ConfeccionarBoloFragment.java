@@ -553,7 +553,6 @@ public class ConfeccionarBoloFragment extends Fragment {
             }
         });
 
-
     }
 
 

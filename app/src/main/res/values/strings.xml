@@ -138,6 +138,9 @@
     <string name="texto_quant_usada_receita_pronta">quantidade usada receita</string>
     <string name="texto_valor_ingrediente_receita_pronta">Valor do ingrediente nessa receita</string>
     <string name="texto_lista_ingredientes_edit_receita">Lista de ingredientes em estoque</string>
+    <string name="texto_valor_caixa_diario">CAIXA DIÁRIO R$</string>
+    <string name="texto_troco_caixa_diario">TROCO R$:</string>
+    <string name="texto_quantidade_bolos_vendido_diario">BOLOS VENDIDOS HOJE:</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

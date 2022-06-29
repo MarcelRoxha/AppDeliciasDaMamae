@@ -32,6 +32,7 @@ public class BoloVendidoModel implements Serializable {
     double resultadovendabolos = 0;
     double resultadoTotalGasto = 0;
     int contAddBolo = 0;
+    int contAddBoloVendido = 0;
 
     String idReferenciaBolo;
     String idMontanteReferencia ;
@@ -164,6 +165,7 @@ public class BoloVendidoModel implements Serializable {
         resultadocustobolos = custobolo + valorcustomontante;
 
         contAddBolo = quantBoloAddRecuperado + 1;
+        contAddBoloVendido = quantBoloAddRecuperado + 1;
 
 
             String idMontante = idRecuperado;
@@ -172,7 +174,7 @@ public class BoloVendidoModel implements Serializable {
 
 
             CaixaMensalModel caixaProcessa = new CaixaMensalModel();
-            caixaProcessa.processaVendaBolo(this.context, idBoloe,idMontante, mesmMontante, contAddBolo, resultadovendabolos, resultadocustobolos, resultadoTotalGasto);
+            caixaProcessa.processaVendaBolo(this.context, idBoloe,idMontante, mesmMontante, contAddBoloVendido, contAddBolo, resultadovendabolos, resultadocustobolos, resultadoTotalGasto);
 
            /* Intent intent = new Intent(context, LojaActivity.class);
             context.startActivity(intent);*/

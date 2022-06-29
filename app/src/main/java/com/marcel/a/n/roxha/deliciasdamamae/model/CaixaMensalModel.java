@@ -23,6 +23,7 @@ public class CaixaMensalModel implements Serializable {
     private String identificadorCaixaMensal;
     private int mesReferencia;
     private int quantTotalBolosAdicionadosMensal;
+    private int quantTotalBolosVendidosMensal;
     private double valorTotalBolosVendidosMensal;
     private double valorTotalCustosBolosVendidosMensal;
     private double totalGastoMensal;
@@ -48,6 +49,14 @@ public class CaixaMensalModel implements Serializable {
 
     public void setMesReferencia(int mesReferencia) {
         this.mesReferencia = mesReferencia;
+    }
+
+    public int getQuantTotalBolosVendidosMensal() {
+        return quantTotalBolosVendidosMensal;
+    }
+
+    public void setQuantTotalBolosVendidosMensal(int quantTotalBolosVendidosMensal) {
+        this.quantTotalBolosVendidosMensal = quantTotalBolosVendidosMensal;
     }
 
     public int getQuantTotalBolosAdicionadosMensal() {
@@ -84,13 +93,14 @@ public class CaixaMensalModel implements Serializable {
 
 
 
-    public void  processaVendaBolo(Context context, String idBoloDelete, String id, int mesReferencia, int quantTotalBolosAdicionadosMensal,
+    public void  processaVendaBolo(Context context, String idBoloDelete, String id, int mesReferencia, int quantTotalBolosVendidosMensal, int quantTotalBolosAdicionadosMensal,
                                    double valorTotalBolosVendidosMensal, double valorTotalCustosBolosVendidosMensal,double totalGastoMensal){
             this.context = context;
             String idBoloVitrineDelete = idBoloDelete;
             String idRecebido = id;
             int mesRecebido = mesReferencia;
             double totalRecebido = quantTotalBolosAdicionadosMensal;
+            int totalVendidoRecebido = quantTotalBolosVendidosMensal;
             double totalVenda = valorTotalBolosVendidosMensal;
             double custoRecebido = valorTotalCustosBolosVendidosMensal;
             double totalmes = totalGastoMensal;
@@ -101,6 +111,7 @@ public class CaixaMensalModel implements Serializable {
         montanteAtualiza.put("identificadorCaixaMensal", idRecebido);
         montanteAtualiza.put("mesReferencia", mesRecebido);
         montanteAtualiza.put("quantTotalBolosAdicionadosMensal", totalRecebido);
+        montanteAtualiza.put("quantTotalBolosVendidosMensal", totalVendidoRecebido);
         montanteAtualiza.put("valorTotalBolosVendidosMensal", totalVenda);
         montanteAtualiza.put("valorTotalCustosBolosVendidosMensal", custoRecebido);
         montanteAtualiza.put("totalGastoMensal", totalmes);

@@ -8,7 +8,6 @@
     tools:context=".activity.LojaActivity">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,11 +19,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:contentDescription="TODO"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_logo"
-            android:contentDescription="TODO" />
+            app:srcCompat="@drawable/ic_logo" />
 
         <TextView
             android:id="@+id/textView32"
@@ -53,7 +52,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/btn"
             android:text="@string/texto_botao_iniciar_caixa"
@@ -128,13 +126,13 @@
             android:id="@+id/botao_adicionar_bolo_vitrine_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="16dp"
             android:text="@string/texto_botao_adicionar_bolo_vitrine"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imagemCasoNaoTemBolosAdicionadoVitrineId" />
+            app:layout_constraintTop_toBottomOf="@+id/textView74" />
 
         <ImageView
             android:id="@+id/imagemCasoNaoTemBolosAdicionadoVitrineId"
@@ -182,6 +180,82 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/botao_compras_id" />
+
+        <TextView
+            android:id="@+id/textView66"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/texto_valor_caixa_diario"
+            android:textColor="@color/rosa"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/imagemCasoNaoTemBolosAdicionadoVitrineId"
+            app:layout_constraintTop_toBottomOf="@+id/imagemCasoNaoTemBolosAdicionadoVitrineId" />
+
+        <TextView
+            android:id="@+id/valor_caixa_diario_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/texto_valor_caixa_diario"
+            android:textColor="@color/azul_escuro"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/textView66"
+            app:layout_constraintStart_toEndOf="@+id/textView66"
+            app:layout_constraintTop_toTopOf="@+id/textView66" />
+
+        <TextView
+            android:id="@+id/textView72"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/texto_troco_caixa_diario"
+            android:textColor="@color/rosa"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView66"
+            app:layout_constraintTop_toBottomOf="@+id/textView66" />
+
+        <TextView
+            android:id="@+id/valor_troco_diario_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/texto_troco_caixa_diario"
+            android:textColor="@color/azul_escuro"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/textView72"
+            app:layout_constraintStart_toEndOf="@+id/textView72"
+            app:layout_constraintTop_toTopOf="@+id/textView72" />
+
+        <TextView
+            android:id="@+id/textView74"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/texto_quantidade_bolos_vendido_diario"
+            android:textColor="@color/rosa"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView72"
+            app:layout_constraintTop_toBottomOf="@+id/textView72" />
+
+        <TextView
+            android:id="@+id/quantidde_bolos_vendidos_hoje_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/texto_quantidade_bolos_vendido_diario"
+            android:textColor="@color/azul_escuro"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/textView74"
+            app:layout_constraintStart_toEndOf="@+id/textView74"
+            app:layout_constraintTop_toTopOf="@+id/textView74" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
